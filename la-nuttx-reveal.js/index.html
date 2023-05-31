@@ -367,19 +367,36 @@ dd命令, 可以将/host/AUTHORS里的内容写到ram0里。
 
 #### 关于实时性
 
-* 官网: 可抢占的调度策略 FIFO, RR, SPORADIC
+* 官网: 可抢占的调度策略 FIFO, RR, SPORADIC, 实时性充分条件?
 
 * NuttX实时性测试: 对NuttX和ChilibOS(2021 International Conference on Unmanned Aircraft Systems)
 
 * NuttX实时性调度的形式化验证(Nuttx 操作系统进程切换调度实时性的形式化验证[J]. 计算机应用与软件, 2018)
 
 ---
-
 #### 关于IPC
 
 * 宏内核, 应用场景不典型？
 
 * 调研dipc, skybridge, xpc, improving ipc by kernekl design
+
+* NuttX提供了共享内存的API, 但是还没有移植
+
+* 考虑缩短message queue, signal的时间
+
+---
+
+#### 一个可能的方案
+
+1.从真机跑OS<!-- .element: style="text-align: left;" -->
+
+1.1 flat模式, 用户程序和内核都编译到代码段里<!-- .element: style="text-align: left;" -->
+	
+*1.2 (6月)kernel模式, 用户程序从磁盘加载, 替代semihost<!-- .element: style="text-align: left;" -->
+
+2.(7-10月)根据NuttX论文写测试, 分析, 优化, 对比.(测试程序未开源)<!-- .element: style="text-align: left;" -->
+
+*3.(11-12月)增强说服力, (移植现实软件? e.g.sqlite) <!-- .element: style="text-align: left;" -->
 
 ===
 
@@ -387,21 +404,7 @@ dd命令, 可以将/host/AUTHORS里的内容写到ram0里。
 
 * 实时系统的充分条件？可抢占的调度？
 
-* 内核比较简单，实时性的优化空间？
-===
-
-### 需要做的工程
-
-* 从真机上跑起来, 不使用semihosting, 改文件系统, 使其支持从磁盘或内存读入文件，创建进程.
-
-<br/><br/>
-
-### 可能做的工程
-
-* sqlite数据库移植, 跑实际应用程序的可行性.
-
-* smp
-
+* 内核比较简单，可优化空间？
 
 					</textarea>
 				</section>
