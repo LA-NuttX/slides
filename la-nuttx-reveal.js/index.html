@@ -35,7 +35,7 @@
 ### 整体移植情况
 * 移植flat和kernel模式内核, 在qemu 7.2.50正常运行
 
-* ostest等功能测试正常, trace经调试正常使用
+* 通过ostest等功能测试, trace经调试正常使用
 
 * qemu:增加semihosting功能, page walk及tlb refill
 ===
@@ -211,9 +211,9 @@ uart读入, 中断内核线程，切换回用户线程
 
 ### 调度策略
 
-* SCHED_RR: pre-emptive
+* SCHED_RR
 
-* SCHED_FIFO: pre-emptive
+* SCHED_FIFO
 
 * SCHED_SPORADIC
 
@@ -250,13 +250,13 @@ enum tstate_e
 };
 ```
 ---
-#### 启动新进程-semihosting
+#### 启动新进程-semihost
 
 启动新进程需要加载代码段
 
 编好的程序存放在host上
 
-semihosting实现从guest操作host文件系统
+semihost实现从guest操作host文件系统
 
 ---
 
@@ -319,13 +319,13 @@ static struct rname_code_s _rname_table[] =
 
 ### 文件系统-pseudo root file system
 
-* 内存中，不需要存储介质
+* 内存中，不需要其他存储介质
 
-* 所有资源都是其中的文件
+* 资源皆文件
 
 * 文件系统的内容可以通过标准接口(read/write/open/close etc.)动态生成
 
-* 可以挂载真实文件系统(支持mount)
+* 可以挂载真实文件系统(mount host文件系统)
 
 ===
 
@@ -369,7 +369,7 @@ dd命令, 可以将/host/AUTHORS里的内容写到ram0里。
 
 * 官网: 可抢占的调度策略 FIFO, RR, SPORADIC, 实时性充分条件?
 
-* NuttX实时性测试: 对NuttX和ChilibOS(2021 International Conference on Unmanned Aircraft Systems)
+* NuttX实时性测试(未开源): 对NuttX和ChilibOS(2021 International Conference on Unmanned Aircraft Systems)
 
 * NuttX实时性调度的形式化验证(Nuttx 操作系统进程切换调度实时性的形式化验证[J]. 计算机应用与软件, 2018)
 
@@ -382,29 +382,37 @@ dd命令, 可以将/host/AUTHORS里的内容写到ram0里。
 
 * NuttX提供了共享内存的API, 但是还没有移植
 
-* 考虑缩短message queue, signal的时间
+* 考虑缩短message queue, signal的时间?
 
 ---
 
-#### 一个可能的方案
+#### 一个初步计划
 
-1.从真机跑OS<!-- .element: style="text-align: left;" -->
+1.(6月)从真机跑OS<!-- .element: style="text-align: left;" -->
 
 1.1 flat模式, 用户程序和内核都编译到代码段里<!-- .element: style="text-align: left;" -->
 	
-*1.2 (6月)kernel模式, 用户程序从磁盘加载, 替代semihost<!-- .element: style="text-align: left;" -->
+*1.2 kernel模式, 用户程序从磁盘加载, 替代semihost<!-- .element: style="text-align: left;" -->
 
-2.(7-10月)根据NuttX论文写测试, 分析, 优化, 对比.(测试程序未开源)<!-- .element: style="text-align: left;" -->
+2.(7-10月)根据论文,自己写测试, 分析, 优化, 对比.<!-- .element: style="text-align: left;" -->
 
 *3.(11-12月)增强说服力, (移植现实软件? e.g.sqlite) <!-- .element: style="text-align: left;" -->
 
-===
+---
 
-### 需要调研的问题
+#### 难点
+
+* 具体的优化方案, 目前了解太少
+
+* 真机上跑起来,写文件系统替代semihost
+
+* 内核比较简单，可优化空间？
+
+#### 一个疑惑
 
 * 实时系统的充分条件？可抢占的调度？
 
-* 内核比较简单，可优化空间？
+
 
 					</textarea>
 				</section>
